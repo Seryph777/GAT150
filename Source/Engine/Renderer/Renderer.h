@@ -1,4 +1,8 @@
 #pragma once
+#include "Font.h"
+#include "Model.h"
+//#include ""
+
 #include <string>
 #include <SDL2-2.28.1/include/SDL.h>
 
@@ -23,12 +27,15 @@ namespace kiko
         void DrawLine(float x1, float y1, float x2, float y2);
         void DrawPoint(int x, int y);
         void DrawPoint(float x, float y);
+        void DrawTexture(class Texture* texture, float x, float y, float angle = 0.0f);
+        void DrawTexture(class Texture* texture, const Transform& transform);
 
         int GetWidth() { return m_width; }
         int GetHeight() { return m_height; }
 
         SDL_Renderer* m_renderer = nullptr;
         SDL_Window* m_window = nullptr;
+        friend class Texture;
     protected:
         int m_width = 0;
         int m_height = 0;

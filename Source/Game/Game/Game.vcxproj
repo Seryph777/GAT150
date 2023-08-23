@@ -98,6 +98,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/WHOLEARCHIVE:Framework %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Bin\$(PlatformName)\$(Configuration)\$(ProjectName)\*.exe" "$(SolutionDir)Build" /Y</Command>
@@ -117,6 +118,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/WHOLEARCHIVE:Framework %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,6 +133,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/WHOLEARCHIVE:Framework %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Bin\$(PlatformName)\$(Configuration)\$(ProjectName)\*.exe" "$(SolutionDir)Build" /Y</Command>
@@ -150,6 +153,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/WHOLEARCHIVE:Framework %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -183,6 +187,11 @@
     <ClInclude Include="SpaceGame.h" />
     <ClInclude Include="StaticModel.h" />
     <ClInclude Include="Weapon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\Build\Assets\json.txt" />
+    <Text Include="..\..\..\Build\Assets\Scene.json" />
+    <Text Include="..\..\..\Build\log.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

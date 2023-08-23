@@ -1,21 +1,32 @@
-// Charles Xavier Grant 
-// 6/26/2023
+ //Charles Xavier Grant 
+ //6/26/2023
 
 #include "Core/Core.h"
-#include "Renderer/Renderer.h"
 #include "Input/InputSystem.h"
+#include "Renderer/Renderer.h"
 #include "Renderer/ModelManager.h"
+#include "Renderer/ParticleSystem.h"
+#include "Renderer/Texture.h"
 #include "Audio/AudioSystem.h"
 #include "Framework/Scene.h"
-#include "Renderer/ParticleSystem.h"
+#include "Framework/ResourceManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Physics/PhysicsSystem.h"
+
+#include "Framework/Factory.h"
 
 #include "SpaceGame.h"
 
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <map>
+#include <array>
+#include <list>
+#include <functional>
+
+
 
 
 using namespace std;
@@ -47,27 +58,39 @@ public:
     kiko::Vector2 m_vel;
 };
 
+void print(int i)
+{
+    cout << i << endl;
+}
 
 
 int main(int argc, char* argv[])
 {
-    {
-        std::unique_ptr<int> up = std::make_unique<int>(10);
-    }
+ 
+    //kiko::Factory::Instance().Register<kiko::SpriteComponent>("SpriteComponent");
 
+
+
+    INFO_LOG("Initialize Engine...");
+
+    cout << "Initialize...\n";
     kiko::MemoryTracker::Initialize();
 
     kiko::seedRandom((unsigned int)time(nullptr));
     kiko::setFilePath("Assets");
 
+   
     
     kiko::g_renderer.Initialize();
     kiko::g_audioSystem.Initialize();
+    kiko::PhysicsSystem::Instance().Initialize();
+
     kiko::g_renderer.CreateWindow("CSC196", 800, 600);
 
-    // Added Audio
-    //kiko::setFilePath("Assets");
+    //Added Audio
+    kiko::setFilePath("Assets");
     
+    // Comment out from here down
 
     
     kiko::g_inputSystem.Initialize();
@@ -75,7 +98,7 @@ int main(int argc, char* argv[])
     game->Initialize();
 
 
-   // std::vector<kiko::vec2> points{{-10, 5}, { 10, 5 }, { 0, -5 }, { -10, 5 }};
+    // std::vector<kiko::vec2> points{{-10, 5}, { 10, 5 }, { 0, -5 }, { -10, 5 }};
     
 
     kiko::vec2 v{5, 5};
@@ -91,9 +114,7 @@ int main(int argc, char* argv[])
     //kiko::vec2 position{400, 300};
     //kiko::Transform transform({ 400, 300 }, 0, 3);
     float speed = 50;
-    constexpr float turnRate = kiko::DegreesToRadians(180.0f);
-
-   
+    constexpr float turnRate = kiko::DegreesToRadians(180.0f); 
 
     kiko::g_audioSystem.PlayOneShot("Music", true);
 
@@ -111,6 +132,7 @@ int main(int argc, char* argv[])
         }
         //update game
         game->Update(kiko::g_time.getDeltaTime());
+        
         
 
 
@@ -150,6 +172,7 @@ int main(int argc, char* argv[])
         // draw
         vec2 vel(1.0f, 0.3f);
 
+        game->Draw(kiko::g_renderer);
         for (auto& star : stars)
         {
             star.Update(kiko::g_renderer.GetWidth(), kiko::g_renderer.GetHeight());
@@ -157,9 +180,8 @@ int main(int argc, char* argv[])
             kiko::g_renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
             star.Draw(kiko::g_renderer);
         }
-        game->Draw(kiko::g_renderer);
-        
-        
+        //kiko::g_renderer.DrawTexture(texture.get(), 50.0f, 50.0f);
+                
         
 
 

@@ -15,6 +15,11 @@ namespace kiko
         Vector2(float x, float y) : x{ x }, y{ y } {}
         Vector2(int x, int y) : x{ (float)x }, y{ (float)y } {}
 
+        float operator [] (size_t index) const { return (&x)[index]; }
+        float& operator [] (size_t index) { return (&x)[index]; }
+
+        Vector2 operator - () const { return Vector2(-x, -y); }
+
         //Vector2 Add(const Vector2& v)  { return Vector2(x + v.x, y + v.y); }
         Vector2 operator + (const Vector2& v) const { return Vector2(x + v.x, y + v.y); }
         Vector2 operator - (const Vector2& v) const { return Vector2(x - v.x, y - v.y); }
@@ -43,11 +48,9 @@ namespace kiko
 
         float Angle() const { return std::atan2f(y, x); }
         Vector2 Rotate(float radians) const; // Declared, not Defined
-    static float SignedAngle(const Vector2& v1, const Vector2& v2);
-    static float Angle(const Vector2& v1, const Vector2& v2);
-    static float Dot(const Vector2& v1, const Vector2& v2);
-
-
+        static float SignedAngle(const Vector2& v1, const Vector2& v2);
+        static float Angle(const Vector2& v1, const Vector2& v2);
+        static float Dot(const Vector2& v1, const Vector2& v2);
     };
     
     inline std::istream& operator >> (std::istream& stream, Vector2& v) 
@@ -92,6 +95,7 @@ namespace kiko
     {
         return v1.x * v2.x + v1.y * v2.y;
     }
+
     using vec2 = Vector2;
 
 

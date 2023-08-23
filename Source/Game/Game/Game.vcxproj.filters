@@ -5,6 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{da044eef-a270-4357-909d-b0874dd80a79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -42,5 +45,16 @@
     <ClInclude Include="StaticModel.h">
       <Filter>Source</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\Build\Assets\Scene.json">
+      <Filter>Resources</Filter>
+    </Text>
+    <Text Include="..\..\..\Build\Assets\json.txt">
+      <Filter>Resources</Filter>
+    </Text>
+    <Text Include="..\..\..\Build\log.txt">
+      <Filter>Resources</Filter>
+    </Text>
   </ItemGroup>
 </Project>

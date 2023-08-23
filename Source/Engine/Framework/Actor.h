@@ -1,40 +1,60 @@
 #pragma once
+#include "Object.h"
 #include "Core/Core.h"
 #include "Renderer/Model.h"
+#include "Framework/Component.h"
 #include <memory>
 
 namespace kiko
 {
-	class Actor
+	class Actor : public Object
 	{
 	public:
+		CLASS_DECLARATION(Actor)
+
 		Actor() = default;
-		Actor(const Transform& transform) : m_transform{ transform } {}
-		Actor(const Transform& transform, std::shared_ptr<kiko::Model> model) : m_transform{ transform }, m_model{ model } {}
+		Actor(const Transform& transform) : transform{ transform } {}
+		Actor(const Actor& other);
+
+		virtual bool Initialize() override;
+		virtual void OnDestroy() override;
 
 		virtual void Update(float dt);
 		virtual void Draw(Renderer& renderer);
+		template<typename T>
+		T* GetComponent();
+		
 
-		float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : (m_tag != "") ? 0 : -10000; }
+		void AddComponent(std::unique_ptr<Component> component);
+
+		float GetRadius() { return 30.0f; }
 		virtual void OnCollision(Actor* other) {};
-
-		void AddForce(const vec2 force) { m_velocity += force; }
-		void SetDamping(float damping) { m_damping = damping; }
 
 		friend class Scene;
 		friend class SpaceGame;
-
-		Transform m_transform;
-		std::string m_tag;
-
-		float m_lifespan = -1.0f;
-	protected:
 		class Scene* m_scene = nullptr;
 		class Game* m_game = nullptr;
-		bool m_destroyed = false;
 
-		std::shared_ptr<Model> m_model;
-		vec2 m_velocity;
-		float m_damping = 0;
+	public:
+		Transform transform;
+		std::string tag;
+		float lifespan = -1.0f;
+	protected:
+		std::vector<std::unique_ptr<Component>> components;
+
+		bool destroyed = false;
+		bool persistent = false;
+		bool prototype = false;
 	};
+	template<typename T>
+	inline T* Actor::GetComponent()
+	{
+		for (auto& component : components)
+		{
+			T* result = dynamic_cast<T*>(component.get());
+			if (result) return result;
+		}
+
+		return nullptr;
+	}
 }

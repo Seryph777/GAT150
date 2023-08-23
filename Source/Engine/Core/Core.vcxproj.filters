@@ -5,6 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Source\Math">
+      <UniqueIdentifier>{57fff15a-06b0-45a9-bed2-9e780cf7f4c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileIO.cpp">
@@ -16,14 +19,17 @@
     <ClCompile Include="Time.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Json.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Tranform.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tranform.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="MathUtils.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Core.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -33,16 +39,37 @@
     <ClInclude Include="Memory.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Random.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
+    <ClInclude Include="Logger.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtils.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Tranform.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix22.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix33.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

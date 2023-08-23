@@ -1,10 +1,13 @@
 #pragma once
 #include "Core/Core.h"
-#include "Renderer.h"
+#include "Framework/Resource.h"
 #include <vector>
 
 namespace kiko {
-	class Model {
+	class Renderer;
+
+	class Model : public Resource
+	{
 	public:
 		Model() = default;
 		Model(const std::vector<vec2>& points) : m_points{ points } {}
@@ -15,10 +18,13 @@ namespace kiko {
 		void Draw(Renderer& renderer, const Transform& transform);
 
 		float GetRadius();
+		virtual bool Create(std::string filename, ...) override;
 
 	private:
 		std::vector<vec2> m_points;
 		Color m_color;
 		float m_radius = 0;
+
+		// Inherited via Resource
 	};
 }
