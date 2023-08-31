@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Vector2.h"
 
 namespace kiko
@@ -12,12 +13,11 @@ namespace kiko
 		// rows[1] = vec2{ 0, 0 }
 
 		Matrix22() = default;
-		Matrix22(const vec2& row1, const vec2& row2) 
+		Matrix22(const vec2& row1, const vec2& row2)
 		{
 			rows[0] = row1;
 			rows[1] = row2;
 		}
-		
 
 		vec2  operator [] (size_t index) const { return rows[index]; }
 		vec2& operator [] (size_t index) { return rows[index]; }
@@ -32,46 +32,9 @@ namespace kiko
 		static Matrix22 CreateIdentity();
 	};
 
-	inline Matrix22 Matrix22::CreateIdentity()
+	inline vec2 Matrix22::operator*(const vec2& v)
 	{
-		return
-		{
-			{1, 0},
-			{0, 1}
-		};
-	}
-	inline Matrix22 Matrix22::CreateScale(const vec2& scale)
-	{
-		return
-		{
-			{scale.x, 0.0f},
-			{0.0f, scale.y}
-		};
-	}
-	inline Matrix22 Matrix22::CreateScale(float scale)
-	{
-		return
-		{
-			{scale, 0.0f},
-			{0.0f, scale}
-		};
-	}
-
-	inline Matrix22 kiko::Matrix22::CreateRotation(float radians)
-	{
-		float c = cos(radians);
-		float s = sin(radians);
-
-
-		return
-		{
-			{c, -s},
-			{s, c}
-		};
-	}
-	inline vec2 kiko::Matrix22::operator*(const vec2& v)
-	{
-		// | a b |   | x |
+		// | a b |   | x | 
 		// | c d | * | y |
 
 		vec2 result;
@@ -80,12 +43,13 @@ namespace kiko
 
 		return result;
 	}
+
 	inline Matrix22 Matrix22::operator*(const Matrix22& mx)
 	{
-		// | a b |   | e f |
-		// | c d | * | g h |
+		// | a b |   | e f |    | ? ? |
+		// | c d | * | g h | =  | ? ? |
 
-		Matrix22 result; 
+		Matrix22 result;
 		result[0][0] = rows[0][0] * mx[0][0] + rows[0][1] * mx[1][0];
 		result[0][1] = rows[0][0] * mx[0][1] + rows[0][1] * mx[1][1];
 		result[1][0] = rows[1][0] * mx[0][0] + rows[1][1] * mx[1][0];
@@ -94,5 +58,44 @@ namespace kiko
 		return result;
 	}
 
+	inline Matrix22 Matrix22::CreateIdentity()
+	{
+		return
+		{   // Matrix22
+			{ 1, 0 }, // vec2
+			{ 0, 1 }  // vec2
+		};
+	}
+
+
+	inline Matrix22 Matrix22::CreateScale(const vec2& scale)
+	{
+		return
+		{   // Matrix22
+			{ scale.x, 0.0f }, // vec2
+			{ 0.0f, scale.y }  // vec2
+		};
+	}
+
+	inline Matrix22 Matrix22::CreateScale(float scale)
+	{
+		return
+		{   // Matrix22
+			{ scale, 0.0f }, // vec2
+			{ 0.0f, scale }  // vec2
+		};
+	}
+
+	inline Matrix22 Matrix22::CreateRotation(float radians)
+	{
+		float c = cos(radians);
+		float s = sin(radians);
+
+		return
+		{   // Matrix22
+			{ c, -s }, // vec2
+			{ s, c }  // vec2
+		};
+	}
 	using mat2 = Matrix22;
 }

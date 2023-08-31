@@ -6,6 +6,7 @@ namespace kiko
 	class Scene;
 	class Renderer;
 
+
 	class Game
 	{
 	public:
@@ -25,10 +26,9 @@ namespace kiko
 		void SetLives(int lives) { m_lives = lives; }
 
 	protected:
-		std::unique_ptr<Scene> m_scene;
-		//std::shared_ptr<Scene> m_scene;
+		std::unique_ptr<class Scene> m_scene;
 
 		int m_score = 0;
-		int m_lives = 0;
+		int m_lives = 3;
 	};
 }

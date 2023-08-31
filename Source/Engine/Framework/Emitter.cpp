@@ -1,9 +1,13 @@
 #include "Emitter.h"
-namespace kiko {
-	void Emitter::Update(float dt)
+#include "Renderer/ParticleSystem.h"
+
+namespace kiko
+{
+	void kiko::Emitter::Update(float dt)
 	{
 		Actor::Update(dt);
-		// create burst particles
+
+		// Create Burst Particles
 		if (m_data.burst)
 		{
 			m_data.burst = false;
@@ -12,7 +16,8 @@ namespace kiko {
 				Emit();
 			}
 		}
-		// create particles based on rate
+
+		// Create Particles Based on Rate
 		if (m_data.spawnRate > 0.0f)
 		{
 			m_data.spawnRateTimer += dt;
@@ -23,13 +28,16 @@ namespace kiko {
 			}
 		}
 	}
-	void Emitter::Draw(kiko::Renderer& renderer)
+
+	void kiko::Emitter::Draw(kiko::Renderer& renderer)
 	{
-		// This function is empty on purpose
+		// Nothing to Draw for Emitter
 	}
-	void Emitter::Emit()
+
+	void kiko::Emitter::Emit()
 	{
 		Particle* particle = g_particleSystem.GetFreeParticle();
+
 		if (particle)
 		{
 			ParticleData data;
@@ -38,11 +46,12 @@ namespace kiko {
 			data.position = transform.position;
 			data.prevPosition = data.position;
 			data.color = m_data.color;
-			float angle = transform.rotation + m_data.angle + randomf(-
-				m_data.angleRange, m_data.angleRange);
+
+			float angle = transform.rotation + m_data.angle + randomf(-m_data.angleRange, m_data.angleRange);
 			vec2 direction = vec2{ 0, -1 }.Rotate(angle);
 			data.velocity = direction * randomf(m_data.speedMin, m_data.speedMax);
 			data.damping = m_data.damping;
+
 			particle->Initialize(data);
 		}
 	}

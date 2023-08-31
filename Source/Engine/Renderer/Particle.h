@@ -3,14 +3,17 @@
 #include "Core/Color.h"
 
 
-namespace kiko {
+namespace kiko
+{
 	struct ParticleData
 	{
-		kiko::vec2 position;
+		vec2 position;
 		vec2 prevPosition;
 		vec2 velocity;
 		float damping = 0;
+
 		Color color;
+
 		float lifetimer = 0;
 		float lifetime = 0;
 	};
@@ -19,6 +22,7 @@ namespace kiko {
 	{
 	public:
 		Particle() = default;
+
 		void Initialize(const ParticleData& data)
 		{
 			m_data = data;
@@ -26,10 +30,11 @@ namespace kiko {
 		}
 		void Update(float dt);
 		void Draw(class Renderer& renderer);
+
 		friend class ParticleSystem;
+
 	private:
 		ParticleData m_data;
 		bool m_isActive = false;
 	};
-	
 }

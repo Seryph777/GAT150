@@ -3,11 +3,13 @@
 
 namespace kiko
 {
-	class CircleCollisionComponent : CollisionComponent
+
+	class CircleCollisionComponent : public CollisionComponent
 	{
-		CLASS_DECLARATION(CircleCollisionComponent)
-		// Inherited via CollisionComponent
+	public:
 		virtual void Update(float dt) override;
 		virtual bool CheckCollision(CollisionComponent* collision) override;
+
+		CLASS_DECLARATION(CircleCollisionComponent)
 	};
 }

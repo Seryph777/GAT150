@@ -1,117 +1,112 @@
-#include "Input/InputSystem.h"
-#include "Framework/Framework.h"
-
-#include "Renderer/Renderer.h"
 #include "Player.h"
 #include "Weapon.h"
 #include "SpaceGame.h"
-#include "Framework/Emitter.h"
-#include "Renderer/Texture.h"
+#include "Framework/Scene.h"
+#include "Framework/SpriteComponent.h"
+#include "Framework/ResourceManager.h"
+#include "Framework/PhysicsComponent.h"
+#include "Input/InputSystem.h"
+#include "Renderer/Renderer.h"
+//#include "Framework/Factory.h"
 
-bool Player::Initialize()
+#include "Framework/CircleCollisionComponent.h"
+
+namespace kiko
 {
-    Actor::Initialize();
+	CLASS_DEFINITION(Player);
 
-    // cache off
-    m_physicsComponent = GetComponent<kiko::PhysicsComponent>();
-    auto collisionComponent = GetComponent<kiko::CollisionComponent>();
-    if (collisionComponent)
-    {
-        auto renderComponent = GetComponent<kiko::RenderComponent>();
-        if (renderComponent)
-        {
-            float scale = transform.scale;
-            //collisionComponent->m_radius = renderComponent->GetRadius() * scale;;
-        }
-    }
-}
+	bool Player::Initialize()
+	{
+		Actor::Initialize();
 
-void Player::Update(float dt)
-{
-    Actor::Update(dt);
+		// Cashe off
+		m_physicsComponent = GetComponent<kiko::PhysicsComponent>();
+		auto collisionComponent = GetComponent<kiko::CollisionComponent>();
+		if (collisionComponent)
+		{
+			auto renderComponent = GetComponent<kiko::RenderComponent>();
+			if (renderComponent)
+			{
+				float scale = transform.scale;
+				collisionComponent->m_radius = GetComponent<kiko::RenderComponent>()->GetRadius() * scale;
+			}
+		}
 
-    //movement
-    float rotate = 0;
-    if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
-    if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
-    transform.rotation += rotate * m_turnRate * kiko::g_time.getDeltaTime();
+		return true;
+	}
 
-    float thrust = 0;
-    if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
+	void Player::Update(float dt)
+	{
 
-    kiko::vec2 forward = kiko::vec2{ 0,-1 }.Rotate(transform.rotation);
-    transform.position += forward * m_speed * thrust * kiko::g_time.getDeltaTime();
+		Actor::Update(dt);
 
-    auto physicsComponent = GetComponent<kiko::PhysicsComponent>();
-    physicsComponent->ApplyForce(forward * m_speed * thrust)
+		// Movement
+		float rotate = 0;
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
+		//transform.rotation += rotate * m_turnRate * kiko::g_time.GetDeltaTime();
+		m_physicsComponent->ApplyTorque(rotate * m_turnRate);
 
+		float thrust = 0;
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_S)) thrust = -1;
 
-    //tranform position
-    transform.position.x = kiko::Wrap(transform.position.x, (float)kiko::g_renderer.GetWidth());
-    transform.position.y = kiko::Wrap(transform.position.y, (float)kiko::g_renderer.GetHeight());
+		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
 
-    //fire weapon
-    if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
-    {
-        auto weapon = INSTANTIATE(Weapon, "Rocket");
-        weapon->transform = { transform.position, transform.rotation + kiko::DegreesToRadians(10.0f), 1 };
-        weapon->Initialize();
-        m_scene->Add(std::move(weapon));
+		m_physicsComponent->ApplyForce(forward * m_speed * thrust);
 
-        // create weapon
-        /*kiko::Transform transform1{m_transform.position, (m_transform.rotation + kiko::DegreesToRadians(10.0f)), m_transform.scale};
-        std::unique_ptr<Weapon> weapon1 = std::make_unique<Weapon>( 400.0f, transform1, m_model );
-        weapon1->m_tag = "PlayerBullet";
-        std::unique_ptr<kiko::SpriteComponent> component1 = std::make_unique<kiko::SpriteComponent>();
-        component1->m_texture = GET_RESOURCE(kiko::Texture,"Ship_1_A_Large.png", kiko::g_renderer);
-        weapon1->AddComponent(std::move(component1));
-        m_scene->Add(std::move(weapon1));
+		//m_transform.position += forward * m_speed * 0.25 * thrust * kiko::g_time.GetDeltaTime();
+		transform.position.x = kiko::Wrap((float)transform.position.x, (float)kiko::g_renderer.GetWidth());
+		transform.position.y = kiko::Wrap((float)transform.position.y, (float)kiko::g_renderer.GetHeight());
 
-        kiko::Transform transform2{m_transform.position, (m_transform.rotation - kiko::DegreesToRadians(10.0f)), m_transform.scale};
-        std::unique_ptr<Weapon> weapon2 = std::make_unique<Weapon>(400.0f, transform2, m_model);
-        weapon2->m_tag = "PlayerBullet";
-        std::unique_ptr<kiko::SpriteComponent> component2 = std::make_unique<kiko::SpriteComponent>();
-        component2->m_texture = GET_RESOURCE(kiko::Texture,"Ship_1_A_Large.png", kiko::g_renderer);
-        weapon2->AddComponent(std::move(component2));
-        m_scene->Add(std::move(weapon2));
+		// Fire Weapons
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) &&
+			!kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE))
+		{
 
-        kiko::EmitterData data;
-        data.burst = true;
-        data.burstCount = 200;
-        data.spawnRate = 0;
-        data.angle = 0;
-        data.angleRange = kiko::Pi;
-        data.lifetimeMin = 0.5f;
-        data.lifetimeMin = 0.5f;
-        data.speedMin = 150;
-        data.speedMax = 150;
-        data.damping = 0.5f;
-        data.color = kiko::Color{ 1, 1, 1, 1 };
-        kiko::Transform transform{ { m_transform.position.x, m_transform.position.y }, 0, 1 };
-        auto emitter = std::make_unique<kiko::Emitter>(transform, data);
-        emitter->m_lifespan = 1.0f;
-        m_scene->Add(std::move(emitter));*/
-        
-    }
-    if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_T)) kiko::g_time.SetTimeScale(0.5f);
-    else kiko::g_time.SetTimeScale(1.0f);
-    // healt check
-    if (m_health <= 0.0f) {
-        destroyed = true;
-        if (destroyed = true) dynamic_cast<SpaceGame*>(m_game)->SetState(SpaceGame::eState::PlayerDeadStart);
-    }
-    
-}
+			// Create Weapons 
+			// Weapon 1
 
-void Player::OnCollision(Actor* other)
-{
-    if (other->tag == "EnemyBullet") {
-        destroyed = true;
-        kiko::EventManager::Instance().DispatchEvent("OnPlayerDead", 0);
+			auto weapon1 = INSTANTIATE(Weapon, "PlayerBasicWeapon");
+			weapon1->transform = { transform.position, transform.rotation + kiko::DegreesToRadians(5.0f), 1 };
+			weapon1->Initialize();
 
-        //m_game->SetLIves(m_game->GetLives() - 1);
-        //m_destroyed = true
-        // dynamic_cast<SpaceGame*>(m_game)->SetState(SpaceGame::eState::PlayerDead);
-    }
+			m_scene->Add(std::move(weapon1));
 
+			// Weapon 2
+
+			auto weapon2 = INSTANTIATE(Weapon, "PlayerBasicWeapon");
+			weapon2->transform = { transform.position, transform.rotation - kiko::DegreesToRadians(5.0f), 1 };
+			weapon2->Initialize();
+
+			m_scene->Add(std::move(weapon2));
+		}
+
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_T)) kiko::g_time.SetTimeScale(0.5f);
+		else kiko::g_time.SetTimeScale(1.0f);
+	}
+
+	void Player::OnCollisionEnter(Actor* other)
+	{
+		if (dynamic_cast<kiko::Weapon*>(other) != nullptr && other->tag == "Enemy")
+		{
+			m_health -= 10;
+			std::cout << m_health << "\n";
+			if (m_health <= 0)
+			{
+				
+				kiko::EventManager::Instance().DispatchEvent("OnPlayerDead", 0);
+				destroyed = true;
+			}
+		}
+	}
+
+	void Player::Read(const kiko::json_t& value)
+	{
+		Actor::Read(value);
+
+		READ_NAME_DATA(value, "speed", m_speed);
+		READ_NAME_DATA(value, "turnRate", m_turnRate);
+		READ_NAME_DATA(value, "health", m_health);
+	}
 }

@@ -16,7 +16,7 @@ namespace kiko
 		void Draw(Renderer& renderer);
 
 		void Add(std::unique_ptr<Actor> actor);
-		void RemoveAll(bool force);
+		void RemoveAll(bool force = false);
 
 		bool Load(const std::string& filename);
 		void Read(const json_t& value);
@@ -26,13 +26,11 @@ namespace kiko
 		template<typename T = Actor>
 		T* GetActorByName(const std::string& name);
 
-
 		friend class Actor;
 
 	private:
 		std::list<std::unique_ptr<Actor>> m_actors;
 	};
-
 	template<typename T>
 	inline T* Scene::GetActor()
 	{
@@ -59,5 +57,4 @@ namespace kiko
 
 		return nullptr;
 	}
-
 }

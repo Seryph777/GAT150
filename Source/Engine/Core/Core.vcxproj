@@ -156,7 +156,7 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Time.cpp" />
-    <ClCompile Include="Tranform.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.h" />
@@ -169,8 +169,9 @@
     <ClInclude Include="Matrix33.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Time.h" />
-    <ClInclude Include="Tranform.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>

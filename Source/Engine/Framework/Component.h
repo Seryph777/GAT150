@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "Framework/Object.h"
 
 namespace kiko
 {
@@ -12,5 +12,6 @@ namespace kiko
 
 	public:
 		class Actor* m_owner = nullptr;
+
 	};
 }

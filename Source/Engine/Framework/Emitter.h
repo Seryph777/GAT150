@@ -1,17 +1,19 @@
 #pragma once
+
+#include "Core/Color.h"
 #include "Actor.h"
-#include "Renderer/Particle.h"
-#include "Renderer/ParticleSystem.h"
+
 namespace kiko
 {
 	struct EmitterData
 	{
-		// emission
+		// Emission
 		float spawnRate = 0;
 		float spawnRateTimer = 0;
 		bool burst = false;
 		size_t burstCount = 0;
-		// particle parameters
+
+		// Particle Parameters
 		float lifetimeMin = 0;
 		float lifetimeMax = 0;
 		float speedMin = 0;
@@ -21,6 +23,7 @@ namespace kiko
 		float angleRange = 0;
 		Color color;
 	};
+
 	class Emitter : public Actor
 	{
 	public:
@@ -29,12 +32,14 @@ namespace kiko
 			Actor{ transform },
 			m_data{ data }
 		{}
+
 		void Update(float dt);
 		void Draw(kiko::Renderer& renderer);
+
 	private:
 		void Emit();
+
 	private:
 		EmitterData m_data;
 	};
-	
 }

@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-#define GET_RESOURCE(type, filename, ...) kiko::Resource::Instance().Get<type>(filename, _VA_ARGS__)
+#define GET_RESOURCE(type, filename, ...) kiko::ResourceManager::Instance().Get<type>(filename, __VA_ARGS__)
 
 namespace kiko
 {
@@ -27,10 +27,14 @@ namespace kiko
 		}
 
 		res_t<T> resource = std::make_shared<T>();
-		resource->Create(filename, args...);
-		m_resources[filename] = resource;
+		if (!resource->Create(filename, args...))
+		{
+			WARNING_LOG("Could not create resource: " << filename);
+			return res_t<T>();
+		}
 
-		return resource;
+		m_resources[filename] = resource;
+		return resource; 
 	}
 
 	

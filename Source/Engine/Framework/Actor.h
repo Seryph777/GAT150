@@ -1,50 +1,56 @@
 #pragma once
 #include "Object.h"
-#include "Core/Core.h"
-#include "Renderer/Model.h"
-#include "Framework/Component.h"
+#include "Renderer/Renderer.h"
+#include "Component.h"
+
 #include <memory>
 
 namespace kiko
 {
 	class Actor : public Object
 	{
-	public:
-		CLASS_DECLARATION(Actor)
 
+	public:
 		Actor() = default;
-		Actor(const Transform& transform) : transform{ transform } {}
+		Actor(const kiko::Transform& transform) :
+			transform{ transform }
+		{}
 		Actor(const Actor& other);
+		virtual ~Actor() {
+			OnDestroy();
+		}
 
 		virtual bool Initialize() override;
 		virtual void OnDestroy() override;
 
 		virtual void Update(float dt);
-		virtual void Draw(Renderer& renderer);
-		template<typename T>
-		T* GetComponent();
-		
+		virtual void Draw(kiko::Renderer& renderer);
 
 		void AddComponent(std::unique_ptr<Component> component);
 
-		float GetRadius() { return 30.0f; }
-		virtual void OnCollision(Actor* other) {};
+		template<typename T>
+		T* GetComponent();
 
-		friend class Scene;
-		friend class SpaceGame;
+		virtual void OnCollisionEnter(Actor* other) {}
+		virtual void OnCollisionExit(Actor* other) {}
+
 		class Scene* m_scene = nullptr;
+		friend class Scene;
+
 		class Game* m_game = nullptr;
 
 	public:
-		Transform transform;
+		kiko::Transform transform;
 		std::string tag;
 		float lifespan = -1.0f;
+		bool destroyed = false;
+		bool persistant = false;
+		bool prototype = false;
+
+		CLASS_DECLARATION(Actor)
+
 	protected:
 		std::vector<std::unique_ptr<Component>> components;
-
-		bool destroyed = false;
-		bool persistent = false;
-		bool prototype = false;
 	};
 	template<typename T>
 	inline T* Actor::GetComponent()

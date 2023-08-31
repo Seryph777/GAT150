@@ -1,11 +1,11 @@
 #include "Logger.h"
-#include <iostream>
 #include "FileIO.h"
+#include <iostream>
 
 namespace kiko
 {
 
-	bool Logger::Log(LogLevel logLevel, const std::string filename, int line)
+	bool Logger::Log(LogLevel logLevel, const std::string& filename, int line)
 	{
 		if (logLevel < m_logLevel) return false;
 

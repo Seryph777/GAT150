@@ -1,19 +1,16 @@
 #pragma once
 #include "PhysicsComponent.h"
-#include "Actor.h"
 
 namespace kiko
 {
-	class EnginePhysicsComponent : PhysicsComponent
+
+	class EnginePhysicsComponent : public PhysicsComponent
 	{
 	public:
-
-
-
-		// Inherited via PhysicsComponent
 		virtual void Update(float dt) override;
-
 		virtual void ApplyForce(const vec2& force) override;
+		virtual void ApplyTorque(float torque) override;
 
+		CLASS_DECLARATION(EnginePhysicsComponent)
 	};
 }

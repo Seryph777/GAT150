@@ -9,6 +9,7 @@
 
 #include "RenderComponent.h"
 #include "SpriteComponent.h"
+#include "SpriteAnimComponent.h"
 #include "ModelRenderComponent.h"
 
 #include "PhysicsComponent.h"
@@ -16,9 +17,11 @@
 
 #include "CollisionComponent.h"
 #include "CircleCollisionComponent.h"
+#include "Box2DCollisionComponent.h"
+#include "Box2DPhysicsComponent.h"
 
 #include "Resource.h"
 #include "ResourceManager.h"
-#include "Factory.h"
-#include "Event/Event.h"
 #include "Event/EventManager.h"
+
+#include "Factory.h"

@@ -6,7 +6,7 @@ struct SDL_Texture;
 
 namespace kiko
 {
-	class Texture : Resource
+	class Texture : public Resource
 	{
 	public:
 		Texture() = default;
@@ -14,11 +14,10 @@ namespace kiko
 
 		virtual bool Create(std::string filename, ...) override;
 
-		bool Load(const std::string& filename, class Renderer& renderer );
+		bool Load(const std::string& filename, class Renderer& renderer);
 		vec2 GetSize();
 
 		friend class Renderer;
-
 	private:
 		SDL_Texture* m_texture = nullptr;
 	};

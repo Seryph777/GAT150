@@ -1,16 +1,15 @@
 #include "Actor.h"
 #include "RenderComponent.h"
 
-
-namespace kiko 
+namespace kiko
 {
 	CLASS_DEFINITION(Actor)
 
-	Actor::Actor(const Actor& other)
+		Actor::Actor(const Actor& other)
 	{
 		name = other.name;
 		tag = other.tag;
-		//lifespane = other.lifespan;
+		lifespan = other.lifespan;
 		transform = other.transform;
 		m_scene = other.m_scene;
 		m_game = other.m_game;
@@ -33,14 +32,11 @@ namespace kiko
 	}
 	void Actor::OnDestroy()
 	{
-		for (auto& component : components)
-		{
-			component->OnDestroy();
-		}
+		//
 	}
 	void Actor::Update(float dt)
 	{
-		if (lifespan != -1.0f)
+		if (lifespan != -1.0f && !destroyed)
 		{
 			lifespan -= dt;
 			destroyed = (lifespan <= 0);
@@ -50,12 +46,11 @@ namespace kiko
 		{
 			component->Update(dt);
 		}
-		
+
 	}
 	void Actor::Draw(kiko::Renderer& renderer)
 	{
-		//if (m_model) m_model->Draw(renderer, m_transform);
-		for (auto& component : components) 
+		for (auto& component : components)
 		{
 			if (dynamic_cast<RenderComponent*>(component.get()))
 			{
@@ -63,21 +58,20 @@ namespace kiko
 			}
 		}
 	}
-
 	void Actor::AddComponent(std::unique_ptr<Component> component)
 	{
 		component->m_owner = this;
 		components.push_back(std::move(component));
 	}
 
-	void Actor::Read(const json_t& value)
+	void Actor::Read(const rapidjson::Value& value)
 	{
 		Object::Read(value);
 
-		READ_DATA(value, tag)
-		READ_DATA(value, lifespan)
-		READ_DATA(value, persistent)
-		READ_DATA(value, prototype)
+		READ_DATA(value, tag);
+		READ_DATA(value, lifespan);
+		READ_DATA(value, persistant);
+		READ_DATA(value, prototype);
 
 		if (HAS_DATA(value, transform)) transform.Read(GET_DATA(value, transform));
 
@@ -90,9 +84,9 @@ namespace kiko
 
 				auto component = CREATE_CLASS_BASE(Component, type);
 				component->Read(componentValue);
+
 				AddComponent(std::move(component));
 			}
 		}
-	
 	}
 }

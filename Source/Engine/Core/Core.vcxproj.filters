@@ -25,7 +25,7 @@
     <ClCompile Include="Json.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Tranform.cpp">
+    <ClCompile Include="Transform.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,7 +51,7 @@
     <ClInclude Include="MathUtils.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Tranform.h">
+    <ClInclude Include="Transform.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
@@ -71,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="Json.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Source\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

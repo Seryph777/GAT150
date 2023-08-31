@@ -1,0 +1,197 @@
+{
+	"actors": [
+		{
+			"type": "Actor",
+			"name": "Background",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 3.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "Textures/SpaceBackground.png"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Title",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 2.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "ArcadeClassic.ttf",
+					"fontSize": 24,
+					"text": "Final Frontier"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Coin",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteAnimRenderComponent",
+					"defaultSequenceName": "idle",
+					"sequences": [
+						{
+							"name": "idle",
+							"fps": 12,
+							"numColumns": 8,
+							"numRows": 1,
+							"startFrame": 1,
+							"endFrame": 8,
+							"textureName": "Textures/Coin.png"
+						}
+					]
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 0,
+					"gravityScale": 1,
+					"constrainAngle": true
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"restitution": 0.5
+				}
+			]
+		},
+		{
+			"type": "Weapon",
+			"name": "PlayerBasicWeapon",
+			"prototype": true,
+			"tag": "Player",
+			"lifespan": 3.0,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"speed": 10.0,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "Textures/Missile_C_Medium.png"
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 0.0,
+					"angularDamping": 2.0,
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 8, 16 ],
+					"isTrigger": true
+				}
+			]
+		},
+		{
+			"type": "Weapon",
+			"name": "EnemyBasicWeapon",
+			"prototype": true,
+			"tag": "Enemy",
+			"lifespan": 3.0,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"speed": 10.0,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "Textures/Enemy_1_C_Small.png"
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 0.0,
+					"angularDamping": 2.0,
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 8, 16 ],
+					"isTrigger": true
+				}
+			]
+		},
+		{
+			"type": "Enemy",
+			"name": "Enemy",
+			"prototype": true,
+			"tag": "Enemy",
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 0.75,
+				"rotation": 0
+			},
+			"speed": 1.0,
+			"turnRate": 0.05,
+			"health": 20.0,
+			"fireTime": 2.0,
+			"fireRate": 2.0,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "Textures/Enemy_1_D_Medium.png"
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 0.98,
+					"angularDamping": 20.0,
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 32, 32 ]
+				}
+			]
+		},
+		{
+			"type": "Player",
+			"name": "Player",
+			"prototype": true,
+			"tag": "Player",
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 0.5,
+				"rotation": 0
+			},
+			"speed": 1.0,
+			"turnRate": 0.05,
+			"health": 100.0,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "Textures/Ship_1_C_Medium.png"
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 0.98,
+					"angularDamping": 10.0,
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 32, 32 ]
+				}
+			]
+		}
+	]
+}

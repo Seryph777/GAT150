@@ -3,7 +3,6 @@
 #include "Vector2.h"
 #include "Matrix22.h"
 #include "Matrix33.h"
-
 #include "Core/Json.h"
 
 namespace kiko
@@ -17,7 +16,8 @@ namespace kiko
 		float scale = 1;
 
 	public:
-		//Transform() = default;
+		Transform() = default;
+
 		Transform(const vec2& position, float rotation, float scale = 1) :
 			position{ position },
 			rotation{ rotation },
